@@ -1,11 +1,35 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Main from './components/Main';
+import { GetStaticProps } from 'next'
 
-export default function Home() {
+export default function Home({ uploadTokenRes }) {
   return (
-    <div className={styles.container}>
-    API.video
+    <div>
+      <Main uploadToken={uploadTokenRes.token} />
     </div>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const res = await fetch(`https://sandbox.api.video/auth/api-key`, {
+    method: 'POST', headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ apiKey: process.env.REACT_APP_API_KEY })
+  })
+  const data = await res.json();
+
+  const uploadToken = await fetch(`https://sandbox.api.video/upload-tokens`, {
+    method: 'POST', headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${data.access_token}`
+    },
+  })
+
+  const uploadTokenRes = await uploadToken.json();
+
+  return {
+    props: { uploadTokenRes }
+  }
 }
