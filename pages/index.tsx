@@ -8,7 +8,7 @@ export default function Home({ uploadToken, bearerToken, videosData }) {
   return (
     <div>
       <Main
-        uploadToken={uploadToken}
+        uploadToken={uploadToken.token}
         bearerToken={bearerToken}
         videosData={videosData}
       />
@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      uploadToken: uploadToken.token,
+      uploadToken: uploadToken,
       bearerToken: bearerToken,
       videosData: videosData
     },
