@@ -106,6 +106,7 @@ const Main: React.FC<Props> = (props) => {
                 const playable = checkPlayable(uploadedVideo.videoId)
                 if (playable) {
                     setVideosArr([...videosArr, uploadedVideo])
+                    clearInterval(interval);
                 }
             }, 2000);
         }
