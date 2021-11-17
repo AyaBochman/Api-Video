@@ -1,6 +1,5 @@
 import Main from './components/Main';
 import { GetStaticProps } from 'next';
-import styled from 'styled-components';
 import getBearerToken from './api/auth';
 import { getAllVideos } from './api/videos';
 
@@ -17,7 +16,17 @@ export default function Home({ uploadToken, bearerToken, videosData }) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const bearerToken = await getBearerToken();
+  // const bearerToken = await getBearerToken();
+  const bearerTokenRes = await fetch(`https://sandbox.api.video/auth/api-key`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
+    body: JSON.stringify({ apiKey: process.env.REACT_APP_API_KEY }),
+  });
+  const bearerToken = await bearerTokenRes.json();
 
   const uploadTokenRes = await fetch(
     `https://sandbox.api.video/upload-tokens`,
@@ -40,7 +49,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       uploadToken: uploadToken,
       bearerToken: bearerToken,
-      videosData: videosData
+      videosData: videosData,
     },
   };
 };
