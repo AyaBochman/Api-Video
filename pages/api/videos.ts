@@ -21,6 +21,8 @@ export async function uploadVideo(body) {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: `Bearer ${bearerToken}`,
+      'Access-Control-Allow-Methods': 'GET, POST, PUT',
+      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify(uploadBody),
   };
@@ -37,6 +39,8 @@ export async function getAllVideos() {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: `Bearer ${bearerToken}`,
+      'Access-Control-Allow-Methods': 'GET, POST, PUT',
+      'Access-Control-Allow-Origin': '*'
     },
   };
   const res = await fetch('https://sandbox.api.video/videos', options);
@@ -52,7 +56,9 @@ export async function getVideoStatus(videoId) {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT',
       Authorization: `Bearer ${bearerToken}`,
+      'Access-Control-Allow-Origin': '*'
     },
   };
   const res = await fetch(

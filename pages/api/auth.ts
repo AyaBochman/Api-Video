@@ -5,6 +5,7 @@ export default async function getBearerToken() {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT',
     },
     body: JSON.stringify({ apiKey: process.env.REACT_APP_API_KEY }),
   });
