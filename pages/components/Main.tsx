@@ -18,6 +18,13 @@ type Props = {
     videosData: any;
 }
 
+type InitialProps = {
+    title: string;
+    description: string;
+    tags: any;
+    playerId: string;
+}
+
 const Main: React.FC<Props> = (props) => {
     const [file, setFile] = useState(null)
     const [totalPercentComplete, setTotalPercentComplete] = useState(0)
@@ -25,7 +32,7 @@ const Main: React.FC<Props> = (props) => {
     const [isLoading, setIsLoading] = useState(false)
     const [isUploaded, setIsUploaded] = useState(false)
     const [videosArr, setVideosArr] = useState([])
-    const [uploadedVideo, setUploadedVideo] = useState({})
+    const [uploadedVideo, setUploadedVideo] = useState(null)
     const [isVideoPlayable, setVideoPlayable] = useState(false)
 
     const initialInputProps = {
@@ -35,7 +42,7 @@ const Main: React.FC<Props> = (props) => {
         playerId: ''
     }
 
-    const [inputs, setInputs] = useState(initialInputProps)
+    const [inputs, setInputs] = useState<InitialProps>(initialInputProps)
 
     useEffect(() => {
         localStorage.setItem('upload_token', props.uploadToken)
@@ -69,7 +76,7 @@ const Main: React.FC<Props> = (props) => {
     const handleSubmit = async () => {
         const uploadObj = { ...inputs }
         if (uploadObj.tags) {
-            uploadObj.tags = uploadObj.tags.split(',')
+            uploadObj.tags = uploadObj.tags.split(',');
         }
         const videoId = await uploadVideo(uploadObj)
         if (videoId) {
