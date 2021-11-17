@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField'
 import styled from 'styled-components'
 
 type Props = {
+    value: string;
     label: string;
     name: string;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -10,11 +11,11 @@ type Props = {
     maxRows?: number;
 }
 
-const CustomTextField: React.FC<Props> = ({ label, multiline = false, maxRows = 4, handleChange, name }) => {
+const CustomTextField: React.FC<Props> = ({ value, label, multiline = false, maxRows = 4, handleChange, name }) => {
     return (
         <StyledTextField>
 
-            <TextField id="outlined-basic" label={label} name={name} onChange={handleChange} multiline={multiline} rows={maxRows} variant="outlined" />
+            <TextField id="outlined-basic" value={value} label={label} name={name} onChange={handleChange} multiline={multiline} rows={maxRows} variant="outlined" />
         </StyledTextField>
     );
 };

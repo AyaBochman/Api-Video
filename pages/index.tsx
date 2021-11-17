@@ -2,11 +2,13 @@ import Main from './components/Main';
 import { GetStaticProps } from 'next'
 import styled from 'styled-components'
 import getBearerToken from './api/auth'
+import { getAllVideos } from './api/videos';
 
-export default function Home({ uploadTokenRes, bearerToken }) {
+
+export default function Home({ uploadToken, bearerToken, videosData }) {
   return (
     <div>
-      <Main uploadToken={uploadTokenRes.token} bearerToken={bearerToken} />
+      <Main uploadToken={uploadToken.token} bearerToken={bearerToken} videosData={videosData} />
     </div>
   )
 }
@@ -15,7 +17,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const bearerToken = await getBearerToken();
 
-  const uploadToken = await fetch(`https://sandbox.api.video/upload-tokens`, {
+  const uploadTokenRes = await fetch(`https://sandbox.api.video/upload-tokens`, {
     method: 'POST', headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -24,9 +26,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
   })
 
-  const uploadTokenRes = await uploadToken.json();
+  const uploadToken = await uploadTokenRes.json();
+
+  const videosData = await getAllVideos();
+
 
   return {
-    props: { uploadTokenRes, bearerToken }
+    props: { uploadToken, bearerToken, videosData }
   }
 }
