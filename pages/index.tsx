@@ -1,35 +1,32 @@
 import Main from './components/Main';
 import { GetStaticProps } from 'next'
+import styled from 'styled-components'
+import getBearerToken from './api/auth'
 
-export default function Home({ uploadTokenRes }) {
+export default function Home({ uploadTokenRes, bearerToken }) {
   return (
     <div>
-      <Main uploadToken={uploadTokenRes.token} />
+      <Main uploadToken={uploadTokenRes.token} bearerToken={bearerToken} />
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await fetch(`https://sandbox.api.video/auth/api-key`, {
-    method: 'POST', headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ apiKey: process.env.REACT_APP_API_KEY })
-  })
-  const data = await res.json();
+
+  const bearerToken = await getBearerToken();
 
   const uploadToken = await fetch(`https://sandbox.api.video/upload-tokens`, {
     method: 'POST', headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${data.access_token}`
+      'Authorization': `Bearer ${bearerToken}`,
+      'Access-Control-Allow-Origin': '*'
     },
   })
 
   const uploadTokenRes = await uploadToken.json();
 
   return {
-    props: { uploadTokenRes }
+    props: { uploadTokenRes, bearerToken }
   }
 }
